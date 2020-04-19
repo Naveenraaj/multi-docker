@@ -3,20 +3,20 @@ services:
     - docker
 
 before_install:
-    - docker build -t naveen/react-test -f ./client/Dockerfile.dev ./client
+    - docker build -t nvnrvi/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-    - docker run naveen/react-test npm test -- --coverage
+    - docker run nvnrvi/react-test npm test -- --coverage
 
 after_success:
-    - docker build -t naveen/multi-client ./client
-    - docker build -t naveen/multi-worker ./worker
-    - docker build -t naveen/multi-server ./server
-    - docker build -t naveen/multi-nginx ./nginx
+    - docker build -t nvnrvi/multi-client ./client
+    - docker build -t nvnrvi/multi-worker ./worker
+    - docker build -t nvnrvi/multi-server ./server
+    - docker build -t nvnrvi/multi-nginx ./nginx
 
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
-    - docker push naveen/multi-client
-    - docker push naveen/multi-server
-    - docker push naveen/multi-worker
-    - docker push naveen/multi-nginx
+    - docker push nvnrvi/multi-client
+    - docker push nvnrvi/multi-server
+    - docker push nvnrvi/multi-worker
+    - docker push nvnrvi/multi-nginx
