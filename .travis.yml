@@ -1,0 +1,22 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t naveen/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run naveen/react-test npm test -- --coverage
+
+after_success:
+    - docker build -t naveen/multi-client ./client
+    - docker build -t naveen/multi-worker ./worker
+    - docker build -t naveen/multi-server ./server
+    - docker build -t naveen/multi-nginx ./nginx
+
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    - docker push naveen/multi-client
+    - docker push naveen/multi-server
+    - docker push naveen/multi-worker
+    - docker push naveen/multi-nginx
